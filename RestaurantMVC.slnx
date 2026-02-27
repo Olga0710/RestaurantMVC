@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="restaurant/RestDomain.csproj" Id="b8d64101-3c8b-4c52-a867-210da36483fd" />
+  <Project Path="RestaurantInfrastructure/RestaurantInfrastructure.csproj" Id="55986873-6b1a-4555-8786-9b6640c6c9af" />
+</Solution>
