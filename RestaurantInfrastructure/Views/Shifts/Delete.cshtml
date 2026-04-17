@@ -1,0 +1,56 @@
+﻿@model RestDomain.Models.Shift
+
+@{
+    ViewData["Title"] = "Видалення зміни";
+}
+
+<div class="container mt-4">
+    <div class="card shadow border-0 mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-danger text-white fw-bold py-3">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> Підтвердження видалення
+        </div>
+        <div class="card-body p-4">
+            <h4 class="text-center mb-4">Ви впевнені, що хочете видалити цю зміну?</h4>
+
+            <hr />
+
+            <dl class="row fs-6">
+                <dt class="col-sm-4 text-muted">Працівник:</dt>
+                <dd class="col-sm-8 fw-bold text-primary">
+                    @Model.Employee?.LastName @Model.Employee?.FirstName
+                </dd>
+
+                <dt class="col-sm-4 text-muted">Дата:</dt>
+                <dd class="col-sm-8">
+                    @Model.ShiftDate?.ToString("dd.MM.yyyy")
+                </dd>
+
+                <dt class="col-sm-4 text-muted">Час роботи:</dt>
+                <dd class="col-sm-8 text-danger fw-bold">
+                    @Model.StartTime?.ToString(@"hh\:mm") — @Model.EndTime?.ToString(@"hh\:mm")
+                </dd>
+
+                <dt class="col-sm-4 text-muted">Позиція:</dt>
+                <dd class="col-sm-8">
+                    <span class="badge bg-warning text-dark">@Model.ShiftType?.Name</span>
+                </dd>
+            </dl>
+
+            <div class="mt-4 d-flex justify-content-between">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger px-4 shadow-sm">
+                        <i class="bi bi-trash"></i> Так, видалити
+                    </button>
+                </form>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    Скасувати
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+}

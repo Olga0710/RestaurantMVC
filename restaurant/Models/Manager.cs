@@ -9,8 +9,8 @@ namespace RestDomain.Models;
 public partial class Manager
 {
     [Key]
-    [Column("EmloyeeID")]
-    public int EmloyeeId { get; set; }
+    [Column("EmployeeID")]
+    public int EmployeeId { get; set; }
 
     [Column(TypeName = "character varying")]
     public string? Departmet { get; set; }
@@ -20,9 +20,9 @@ public partial class Manager
     [InverseProperty("Manager")]
     public virtual ICollection<Bonuse> Bonuses { get; set; } = new List<Bonuse>();
 
-    [ForeignKey("EmloyeeId")]
+    [ForeignKey("EmployeeId")]
     [InverseProperty("Manager")]
-    public virtual Employer Emloyee { get; set; } = null!;
+    public virtual Employer Employee { get; set; } = null!;
 
     [InverseProperty("Manager")]
     public virtual ICollection<Instructor> Instructors { get; set; } = new List<Instructor>();

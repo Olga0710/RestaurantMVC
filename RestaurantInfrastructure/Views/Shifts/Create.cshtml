@@ -1,0 +1,70 @@
+﻿@model RestDomain.Models.Shift
+
+@{
+    ViewData["Title"] = "Створити зміну";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 500px; border-radius: 15px;">
+        <div class="card-header bg-primary text-white fw-bold py-3" style="border-radius: 15px 15px 0 0;">
+            <i class="bi bi-calendar-plus me-2"></i> Нова робоча зміна
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="EmployeeId" class="form-label fw-bold text-secondary">Працівник</label>
+                    <select asp-for="EmployeeId" class="form-select border-primary-subtle" asp-items="ViewBag.EmployeeId">
+                        <option value="">-- Оберіть із списку --</option>
+                    </select>
+                    <span asp-validation-for="EmployeeId" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ShiftTypeId" class="form-label fw-bold text-secondary">Позиція (Станція)</label>
+                    <select asp-for="ShiftTypeId" class="form-select border-primary-subtle" asp-items="ViewBag.ShiftTypeId">
+                        <option value="">-- Оберіть станцію --</option>
+                    </select>
+                    <span asp-validation-for="ShiftTypeId" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label asp-for="StartTime" class="form-label fw-bold text-secondary">Початок</label>
+                        <input asp-for="StartTime" type="time" class="form-control border-primary-subtle" required />
+                        <span asp-validation-for="StartTime" class="text-danger small"></span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label asp-for="EndTime" class="form-label fw-bold text-secondary">Кінець</label>
+                        <input asp-for="EndTime" type="time" class="form-control border-primary-subtle" required />
+                        <span asp-validation-for="EndTime" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ShiftDate" class="form-label fw-bold text-secondary">Дата зміни</label>
+                    <input asp-for="ShiftDate" type="date" class="form-control border-primary-subtle"
+                           value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                    <span asp-validation-for="ShiftDate" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-arrow-left"></i> Назад
+                    </a>
+                    <button type="submit" class="btn btn-warning fw-bold px-4 shadow-sm text-dark">
+                        Підтвердити <i class="bi bi-check-lg ms-1"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

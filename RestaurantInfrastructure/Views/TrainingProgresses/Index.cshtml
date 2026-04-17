@@ -1,0 +1,92 @@
+﻿@model IEnumerable<RestDomain.Models.TrainingProgress>
+
+@{
+    ViewData["Title"] = "Прогрес навчання";
+}
+
+@functions {
+    // Оновлена функція під 100% шкалу КЛС
+    public (string Text, string Color) GetProgressInfo(int? percent) => percent switch
+    {
+        >= 95 => ("Експерт", "bg-success"),
+        >= 85 => ("Досвідчений", "bg-info text-white"),
+        >= 75 => ("Середній", "bg-warning text-dark"),
+        _ => ("Початківець", "bg-danger")
+    };
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="text-primary fw-bold">🎓 Контроль КЛС: @(ViewBag.CurrentInstructor ?? "Всі інструктори")</h1>
+            <p class="text-muted">Моніторинг успішності за станціями</p>
+        </div>
+        <a asp-action="Create" class="btn btn-success shadow-sm">
+            <i class="bi bi-plus-lg"></i> Нова атестація
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Працівник</th>
+                    <th style="width: 250px;">Станція та Результат</th>
+                    <th>Дата</th>
+                    <th>Інструктор</th>
+                    <th class="text-center">Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var progress = GetProgressInfo(item.KnowledgeLevel);
+                    <tr>
+                        <td class="fw-bold ps-3">
+                            <div class="d-flex flex-column">
+                                <span>@item.Worker?.Employee?.LastName @item.Worker?.Employee?.FirstName</span>
+                                <small class="text-muted fw-normal">ID: @item.WorkerId</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="badge rounded-pill bg-secondary shadow-sm">@item.Station</span>
+                                <span class="fw-bold @(item.KnowledgeLevel >= 85 ? "text-success" : "text-dark")">
+                                    @item.KnowledgeLevel%
+                                </span>
+                            </div>
+                            <div class="progress" style="height: 10px; border-radius: 5px;">
+                                <div class="progress-bar progress-bar-striped @progress.Color"
+                                     role="progressbar"
+                                     style="width: @item.KnowledgeLevel%"></div>
+                            </div>
+                            <small class="text-muted" style="font-size: 0.75rem;">Статус: <strong>@progress.Text</strong></small>
+                        </td>
+                        <td class="text-nowrap">
+                            <i class="bi bi-calendar3 text-muted me-1"></i>
+                            @item.ReviewDate?.ToString("dd.MM.yyyy")
+                        </td>
+                        <td>
+                            <span class="text-truncate d-inline-block" style="max-width: 120px;">
+                                @item.InstuctorDNavigation?.Employee?.LastName
+                            </span>
+                        </td>
+                        <td class="text-center pe-3">
+                            <div class="btn-group shadow-sm">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Деталі">👁️</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning" title="Редагувати">✏️</a>
+
+                                @if (item.KnowledgeLevel >= 85)
+                                {
+                                    <a asp-action="GrantBonus" asp-route-id="@item.Id" class="btn btn-sm btn-success" title="Бонус">💰</a>
+                                }
+
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Видалити">🗑️</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

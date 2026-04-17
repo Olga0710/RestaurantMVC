@@ -1,0 +1,40 @@
+﻿@model IEnumerable<RestDomain.Models.User>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" style="color: #27251F;">Користувачі та доступ</h2>
+        <a asp-action="Index" class="btn btn-outline-dark">
+            <i class="bi bi-shield-lock me-1"></i> Керування ролями
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Email користувача</th>
+                        <th class="text-end pe-4">Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="align-middle ps-4">
+                                <span class="fw-bold">@user.Email</span>
+                            </td>
+                            <td class="text-end pe-4">
+                                <a class="btn btn-sm btn-warning fw-bold shadow-sm"
+                                   style="background-color: #ffbc0d; border-color: #ffbc0d; color: #27251F;"
+                                   asp-action="Edit" asp-route-userid="@user.Id">
+                                    <i class="bi bi-person-gear me-1"></i> Права доступу
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

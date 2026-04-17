@@ -1,0 +1,66 @@
+﻿@model RestDomain.Models.Worker
+
+@{
+    ViewData["Title"] = "Видалення працівника";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-danger text-white py-4 text-center">
+                    <i class="bi bi-exclamation-triangle display-4 mb-2 d-block"></i>
+                    <h3 class="fw-bold mb-0">Видалити працівника?</h3>
+                    <p class="mb-0 opacity-75">Цю дію неможливо буде скасувати</p>
+                </div>
+
+                <div class="card-body p-4 text-center">
+                    <h5 class="text-muted text-uppercase small fw-bold mb-3">Профіль для видалення:</h5>
+
+                    <div class="row mt-4 text-start small">
+                        <div class="col-6 mb-2">
+                            @* Виправлення CS0266: bool? -> bool *@
+                            <strong>Статус:</strong> @(Model.IsMinor == true ? "Неповнолітній" : "Повнолітній")
+                        </div>
+                        <div class="col-6 mb-2">
+                            @* Виправлення CS0029: int? -> bool *@
+                            <strong>Сертифікація:</strong> @(Model.IsCertified == true ? "Так" : "Ні")
+                        </div>
+                        <div class="col-6">
+                            @* Виправлення CS0019: оператор ?? для int? *@
+                            <strong>Інструктор:</strong> @(Model.InstructorId?.ToString() ?? "—")
+                        </div>
+                        <div class="col-6">
+                            <strong>Менеджер:</strong> @(Model.ManagerId?.ToString() ?? "—")
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="EmployeeId" />
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger btn-lg rounded-pill shadow-sm fw-bold">
+                                <i class="bi bi-trash3 me-2"></i>Підтвердити видалення
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">
+                                Скасувати та повернутися
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Плавний ефект для кнопки видалення */
+    .btn-danger {
+        transition: all 0.3s ease;
+    }
+
+        .btn-danger:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 15px rgba(220, 53, 69, 0.3) !important;
+        }
+</style>

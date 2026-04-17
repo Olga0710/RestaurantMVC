@@ -1,0 +1,26 @@
+﻿@model RestDomain.Models.TrainingProgress
+
+<div class="container mt-5">
+    <div class="card border-danger shadow mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-danger text-white text-center py-3">
+            <h4 class="mb-0">🚨 Видалення запису</h4>
+        </div>
+        <div class="card-body text-center p-4">
+            <p class="text-muted">Ви впевнені, що хочете видалити атестацію для:</p>
+            <h3 class="fw-bold text-dark">@Model.Worker?.Employee?.LastName @Model.Worker?.Employee?.FirstName</h3>
+            <div class="bg-light p-3 my-3 rounded text-start">
+                <div><strong>Інструктор:</strong> @Model.InstuctorDNavigation?.Employee?.LastName</div>
+                <div><strong>Дата:</strong> @Model.ReviewDate?.ToString("dd.MM.yyyy")</div>
+                <div><strong>Рівень знань:</strong> @Model.KnowledgeLevel / 4</div>
+            </div>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-danger btn-lg shadow">Видалити назавжди</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Скасувати</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

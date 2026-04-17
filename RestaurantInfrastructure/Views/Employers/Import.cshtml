@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Імпорт працівників";
+}
+
+<div class="container mt-4">
+    <h3>Завантаження працівників з Excel</h3>
+    <hr />
+
+    <form asp-controller="Employers" asp-action="Import" method="post" enctype="multipart/form-data">
+        <div class="form-group mb-3">
+            <label class="control-label">Оберіть Excel файл (.xlsx):</label>
+            <div class="input-group">
+                <label class="input-group-text btn btn-outline-secondary" for="fileExcel">
+                    Обрати файл
+                </label>
+                <input type="file" name="fileExcel" class="form-control" id="fileExcel" style="display: none;" onchange="updateFileName()">
+                <span id="file-name" class="form-control">Файл не обрано</span>
+            </div>
+        </div>
+
+        <script>
+            function updateFileName() {
+                var input = document.getElementById('fileExcel');
+                var output = document.getElementById('file-name');
+                output.innerText = input.files[0] ? input.files[0].name : "Файл не обрано";
+            }
+        </script>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Завантажити в базу</button>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </div>
+    </form>
+</div>

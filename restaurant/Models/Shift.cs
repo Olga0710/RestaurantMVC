@@ -1,36 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-//using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RestDomain.Models;
 
-public partial class Shift:Entity
+public partial class Shift : Entity
 {
-    //[Key]
+    // Якщо Entity не має атрибута Identity, додаємо його тут:
+    //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    
     //[Column("ID")]
-    //public int Id { get; set; }
+    //public  int Id { get; set; }
 
-    [Column("EmpoyeeID")]
-    public int? EmpoyeeId { get; set; }
+    [Column("EmployeeID")]
+    public int? EmployeeId { get; set; }
 
     [Column("ShiftTypeID")]
     public int? ShiftTypeId { get; set; }
 
-    [Column(TypeName = "time with time zone")]
-    public DateTimeOffset? StartTime { get; set; }
+    [Column(TypeName = "time")]
+    public TimeSpan? StartTime { get; set; }
 
-    [Column(TypeName = "time with time zone")]
-    public DateTimeOffset? EndTime { get; set; }
+    [Column(TypeName = "time")]
+    public TimeSpan? EndTime { get; set; }
 
     public DateOnly? ShiftDate { get; set; }
 
-    [ForeignKey("EmpoyeeId")]
-    [InverseProperty("Shifts")]
-    public virtual Employer? Empoyee { get; set; }
+    [ForeignKey("EmployeeId")]
+    public virtual Employer? Employee { get; set; }
 
     [ForeignKey("ShiftTypeId")]
-    [InverseProperty("Shifts")]
     public virtual ShiftsType? ShiftType { get; set; }
 }

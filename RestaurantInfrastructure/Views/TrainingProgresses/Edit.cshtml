@@ -1,0 +1,56 @@
+﻿@model RestDomain.Models.TrainingProgress
+
+@{
+    ViewData["Title"] = "Редагувати запис";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-warning text-dark fw-bold">
+            <i class="bi bi-pencil-square me-2"></i> Оновлення даних навчання
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted">Працівник (Учень)</label>
+                    <select asp-for="WorkerId" class="form-select border-primary" asp-items="ViewBag.WorkerId"></select>
+                    <span asp-validation-for="WorkerId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted">Інструктор</label>
+                    <select asp-for="InstuctorD" class="form-select" asp-items="ViewBag.InstuctorD"></select>
+                    <span asp-validation-for="InstuctorD" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted">Станція (КЛС)</label>
+                    <input asp-for="Station" class="form-control border-warning" placeholder="Наприклад: Каса" />
+                    <span asp-validation-for="Station" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small text-muted">Результат (%)</label>
+                        <input asp-for="KnowledgeLevel" class="form-control" type="number" min="0" max="100" />
+                        <span asp-validation-for="KnowledgeLevel" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small text-muted">Дата</label>
+                        <input asp-for="ReviewDate" type="date" class="form-control" />
+                        <span asp-validation-for="ReviewDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4 border-top pt-3 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-light">Скасувати</a>
+                    <button type="submit" class="btn btn-primary px-4 shadow-sm">Зберегти зміни</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

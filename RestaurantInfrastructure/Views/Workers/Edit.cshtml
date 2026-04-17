@@ -1,0 +1,53 @@
+﻿@model RestDomain.Models.Worker
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-success text-white py-3 text-center">
+                    <h3 class="fw-bold mb-0">🛠️ Редагування профілю</h3>
+                    <p class="mb-0 opacity-75">@Model.Employee?.LastName @Model.Employee?.FirstName</p>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <input type="hidden" name="EmployeeId" value="@Model.EmployeeId" />
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted small">ВІДПОВІДАЛЬНИЙ МЕНЕДЖЕР</label>
+                            <select asp-for="ManagerId" class="form-select rounded-pill" asp-items="ViewBag.ManagerId">
+                                <option value="">-- Оберіть менеджера --</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-muted small">НАСТАВНИК (ІНСТРУКТОР)</label>
+                            <select asp-for="InstructorId" class="form-select rounded-pill" asp-items="ViewBag.InstructorId">
+                                <option value="">-- Оберіть інструктора --</option>
+                            </select>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <div class="form-check form-switch p-3 border rounded-4 bg-light shadow-sm">
+                                    <input class="form-check-input ms-0 me-2" type="checkbox" name="IsMinor" value="true" @(Model.IsMinor == true ? "checked" : "")>
+                                    <label class="form-check-label fw-bold small">Неповнолітній</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-check form-switch p-3 border rounded-4 bg-light shadow-sm">
+                                    <input class="form-check-input ms-0 me-2" type="checkbox" name="IsCertified" value="true" @(Model.IsCertified == true ? "checked" : "")>
+                                    <label class="form-check-label fw-bold small">Сертифікований</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg rounded-pill fw-bold shadow">Зберегти</button>
+                            <a asp-action="Index" class="btn btn-light rounded-pill">Назад</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

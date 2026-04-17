@@ -40,8 +40,7 @@ public partial class DbRestaurantContext : DbContext
         modelBuilder.Entity<Bonuse>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Bonuses_pkey");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
             entity.HasOne(d => d.Employee).WithMany(p => p.Bonuses)
                 .OnDelete(DeleteBehavior.Cascade)
@@ -60,10 +59,14 @@ public partial class DbRestaurantContext : DbContext
         modelBuilder.Entity<Instructor>(entity =>
         {
             entity.HasKey(e => e.EmployeeId).HasName("Instructor_pkey");
-
+            // Прибираємо ValueGeneratedOnAdd для FK/PK ключа, він має братися від Employer
             entity.Property(e => e.EmployeeId).ValueGeneratedNever();
 
-            entity.HasOne(d => d.Employee).WithOne(p => p.Instructor).HasConstraintName("Instructor_EmployeeID_fkey");
+            entity.HasOne(d => d.Employee)
+                .WithOne(p => p.Instructor)
+                .HasForeignKey<Instructor>(d => d.EmployeeId) // Вказуємо явно
+                .OnDelete(DeleteBehavior.Cascade)             // ДОДАНО КАСКАД
+                .HasConstraintName("Instructor_EmployeeID_fkey");
 
             entity.HasOne(d => d.Manager).WithMany(p => p.Instructors)
                 .OnDelete(DeleteBehavior.SetNull)
@@ -72,20 +75,22 @@ public partial class DbRestaurantContext : DbContext
 
         modelBuilder.Entity<Manager>(entity =>
         {
-            entity.HasKey(e => e.EmloyeeId).HasName("Managers_pkey");
+            entity.HasKey(e => e.EmployeeId).HasName("Managers_pkey");
+            entity.Property(e => e.EmployeeId).ValueGeneratedNever();
 
-            entity.Property(e => e.EmloyeeId).ValueGeneratedNever();
-
-            entity.HasOne(d => d.Emloyee).WithOne(p => p.Manager).HasConstraintName("Managers_EmloyeeID_fkey");
+            entity.HasOne(d => d.Employee)
+                .WithOne(p => p.Manager)
+                .HasForeignKey<Manager>(d => d.EmployeeId) // Вказуємо явно
+                .OnDelete(DeleteBehavior.Cascade)             // ДОДАНО КАСКАД
+                .HasConstraintName("Managers_EmloyeeID_fkey");
         });
 
         modelBuilder.Entity<Shift>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Shifts_pkey");
+            entity.Property(e => e.Id).HasColumnName("ID").ValueGeneratedOnAdd();
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
-
-            entity.HasOne(d => d.Empoyee).WithMany(p => p.Shifts)
+            entity.HasOne(d => d.Employee).WithMany(p => p.Shifts)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("Shifts_EmpoyeeID_fkey");
 
@@ -95,15 +100,13 @@ public partial class DbRestaurantContext : DbContext
         modelBuilder.Entity<ShiftsType>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ShiftsTypes_pkey");
-
             entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<TrainingProgress>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("TrainingProgress_pkey");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
             entity.HasOne(d => d.InstuctorDNavigation).WithMany(p => p.TrainingProgresses)
                 .OnDelete(DeleteBehavior.Cascade)
@@ -116,14 +119,16 @@ public partial class DbRestaurantContext : DbContext
 
         modelBuilder.Entity<Worker>(entity =>
         {
-            entity.HasKey(e => e.EmpoyeeId).HasName("Workers_pkey");
+            entity.HasKey(e => e.EmployeeId).HasName("Workers_pkey");
+            entity.Property(e => e.EmployeeId).ValueGeneratedNever();
 
-            entity.Property(e => e.EmpoyeeId).ValueGeneratedNever();
-
-            entity.HasOne(d => d.Empoyee).WithOne(p => p.Worker).HasConstraintName("Workers_EmpoyeeID_fkey");
+            entity.HasOne(d => d.Employee)
+                .WithOne(p => p.Worker)
+                .HasForeignKey<Worker>(d => d.EmployeeId) // Вказуємо явно
+                .OnDelete(DeleteBehavior.Cascade)           // ДОДАНО КАСКАД
+                .HasConstraintName("Workers_EmpoyeeID_fkey");
 
             entity.HasOne(d => d.Instructor).WithMany(p => p.Workers).HasConstraintName("Workers_InstructorID_fkey");
-
             entity.HasOne(d => d.Manager).WithMany(p => p.Workers).HasConstraintName("Workers_ManagerID_fkey");
         });
 

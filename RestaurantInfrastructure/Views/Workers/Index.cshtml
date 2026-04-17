@@ -1,0 +1,40 @@
+﻿@model IEnumerable<RestDomain.Models.Worker>
+
+@{
+    ViewData["Title"] = "Мої учні";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary">👨‍🎓 Мої учні (ТОП-5)</h2>
+        <span class="badge bg-info text-dark">Інструктор: @User.Identity.Name</span>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <img src="https://ui-avatars.com/api/?name=@(item.Employee.LastName)+@(item.Employee.FirstName)&background=random&size=128"
+                                 class="rounded-circle shadow-sm" alt="Avatar">
+                        </div>
+                        <h5 class="card-title fw-bold">@item.Employee.LastName @item.Employee.FirstName</h5>
+                        <p class="text-muted small">ID Працівника: @item.EmployeeId</p>
+
+                        <div class="d-grid gap-2 mt-3">
+                            <a asp-controller="TrainingProgresses"
+                               asp-action="Create"
+                               asp-route-workerId="@item.EmployeeId"
+                               class="btn btn-success">
+                                ⭐ Оцінити знання
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-outline-secondary btn-sm">Деталі профілю</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,104 @@
+﻿@model RestDomain.Models.Employer
+
+<div class="container mt-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-success text-white fw-bold">
+            <i class="bi bi-person-plus"></i> Новий працівник
+        </div>
+        <div class="card-body">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row g-3">
+                    @* ПІБ *@
+                    <div class="col-md-6">
+                        <label asp-for="FirstName" class="form-label fw-bold small text-muted">Ім'я</label>
+                        <input asp-for="FirstName" class="form-control" placeholder="Олександр" />
+                        <span asp-validation-for="FirstName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="LastName" class="form-label fw-bold small text-muted">Прізвище</label>
+                        <input asp-for="LastName" class="form-control" placeholder="Карапіщенко" />
+                        <span asp-validation-for="LastName" class="text-danger small"></span>
+                    </div>
+
+                    @* ТЕЛЕФОН (Перенесено вище для логіки контактів) *@
+                    <div class="col-12">
+                        <label asp-for="PhoneNumber" class="form-label fw-bold small text-muted">Номер телефону</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">+38</span>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="0671234567" type="tel" />
+                        </div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                    </div>
+
+                    @* Ставка та Дата *@
+                    <div class="col-md-6">
+                        <label asp-for="SalaryPerHour" class="form-label fw-bold small text-muted">Ставка (грн/год)</label>
+                        <input asp-for="SalaryPerHour" class="form-control" type="number" step="0.01" value="170.00" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="CreatedAt" class="form-label fw-bold small text-muted">Дата прийому</label>
+                        <input asp-for="CreatedAt" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    </div>
+
+                    @* Роль *@
+                    <div class="col-12">
+                        <label asp-for="Role" class="form-label fw-bold small text-muted">Посада</label>
+                        <select asp-for="Role" class="form-select" id="roleSelect">
+                            <option value="">-- Оберіть роль --</option>
+                            <option value="Manager">Менеджер</option>
+                            <option value="Instructor">Інструктор</option>
+                            <option value="Worker">Робітник</option>
+                        </select>
+                        <span asp-validation-for="Role" class="text-danger small"></span>
+                    </div>
+
+                    @* Динамічні поля *@
+                    <div id="managerField" class="col-12 d-none">
+                        <label class="form-label fw-bold small text-muted">Призначити менеджера</label>
+                        <select name="ManagerId" class="form-select" asp-items="ViewBag.ManagerId">
+                            <option value="">-- Оберіть менеджера --</option>
+                        </select>
+                    </div>
+
+                    <div id="instructorField" class="col-12 d-none">
+                        <label class="form-label fw-bold small text-muted">Призначити інструктора</label>
+                        <select name="InstructorId" class="form-select" asp-items="ViewBag.InstructorId">
+                            <option value="">-- Без інструктора --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Скасувати</a>
+                    <button type="submit" class="btn btn-success px-4">Створити</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" /> @* Додано для валідації на стороні клієнта *@
+    <script>
+        document.getElementById('roleSelect').addEventListener('change', function() {
+            var role = this.value;
+            var instructorField = document.getElementById('instructorField');
+            var managerField = document.getElementById('managerField');
+
+            if (role === 'Worker') {
+                instructorField.classList.remove('d-none');
+                managerField.classList.remove('d-none');
+            }
+            else if (role === 'Instructor') {
+                instructorField.classList.add('d-none');
+                managerField.classList.remove('d-none');
+            }
+            else {
+                instructorField.classList.add('d-none');
+                managerField.classList.add('d-none');
+            }
+        });
+    </script>
+}

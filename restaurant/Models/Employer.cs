@@ -21,20 +21,28 @@ public partial class Employer:Entity
    // [Precision(12, 2)]
     public decimal? SalaryPerHour { get; set; }
 
-    public DateOnly? CreatedAt { get; set; }
+    public string Role { get; set; } = "Worker";
+    public DateOnly? CreatedAt { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
     [InverseProperty("Employee")]
     public virtual ICollection<Bonuse> Bonuses { get; set; } = new List<Bonuse>();
 
+    [Required(ErrorMessage = "Номер телефону обов'язковий")]
+    [Phone(ErrorMessage = "Невірний формат номера")]
+    public string? PhoneNumber { get; set; }
+
     [InverseProperty("Employee")]
     public virtual Instructor? Instructor { get; set; }
 
-    [InverseProperty("Emloyee")]
+    [InverseProperty("Employee")]
     public virtual Manager? Manager { get; set; }
 
-    [InverseProperty("Empoyee")]
+    [InverseProperty("Employee")]
     public virtual ICollection<Shift> Shifts { get; set; } = new List<Shift>();
 
-    [InverseProperty("Empoyee")]
+    [InverseProperty("Employee")]
     public virtual Worker? Worker { get; set; }
+
+    [Column(TypeName = "character varying")]
+    public string? Email { get; set; } // Додай цей рядок
 }

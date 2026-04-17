@@ -24,7 +24,7 @@ public partial class Bonuse:Entity
     [Column(TypeName = "character varying")]
     public string? Reason { get; set; }
 
-    [Column(TypeName = "time with time zone")]
+    [Column(TypeName = "timestamp with time zone")]
     public DateTimeOffset? DataGranted { get; set; }
 
     [ForeignKey("EmployeeId")]

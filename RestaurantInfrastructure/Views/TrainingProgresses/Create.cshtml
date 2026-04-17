@@ -1,0 +1,58 @@
+﻿@model RestDomain.Models.TrainingProgress
+
+<div class="container mt-4">
+    <div class="card shadow mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-success text-white fw-bold">
+            <i class="bi bi-clipboard-check me-2"></i>Нова перевірка знань (КЛС)
+        </div>
+        <div class="card-body">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted">Інструктор</label>
+                    <select asp-for="InstuctorD" class="form-select" asp-items="ViewBag.InstuctorD">
+                        <option value="">-- Оберіть інструктора --</option>
+                    </select>
+                    <span asp-validation-for="InstuctorD" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted">Учень (Працівник)</label>
+                    <select asp-for="WorkerId" class="form-select" asp-items="ViewBag.WorkerId">
+                        <option value="">-- Оберіть учня --</option>
+                    </select>
+                    <span asp-validation-for="WorkerId" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted">Станція (з довідника типів змін)</label>
+                    <select asp-for="Station" class="form-select border-primary shadow-sm" asp-items="ViewBag.StationList">
+                        <option value="">-- Оберіть станцію для оцінки --</option>
+                    </select>
+                    <span asp-validation-for="Station" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label class="form-label small fw-bold text-muted">Результат (%)</label>
+                        <input asp-for="KnowledgeLevel" class="form-control" type="number" min="0" max="100" placeholder="0-100" />
+                        <span asp-validation-for="KnowledgeLevel" class="text-danger small"></span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label class="form-label small fw-bold text-muted">Дата перевірки</label>
+                        <input asp-for="ReviewDate" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="ReviewDate" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary w-100 shadow-sm py-2">
+                        <i class="bi bi-save me-2"></i>Зберегти запис КЛС
+                    </button>
+                    <a asp-action="Index" class="btn btn-link w-100 text-secondary mt-2">Скасувати</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

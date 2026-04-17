@@ -1,0 +1,76 @@
+﻿@model RestDomain.Models.Bonuse
+
+@{
+    ViewData["Title"] = "Створити Бонус";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-dark py-3 rounded-top-4 text-center">
+                    <h3 class="fw-bold mb-0">💰 Створити Бонус</h3>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold"><i class="bi bi-person me-1"></i> Працівник</label>
+                            <select asp-for="EmployeeId" class="form-select rounded-pill border-2" asp-items="ViewBag.EmployeeId">
+                                <option value="">-- Оберіть працівника --</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold"><i class="bi bi-cash-stack me-1"></i> Сума (грн)</label>
+                            <div class="input-group">
+                                <span class="input-group-text rounded-start-pill border-2 bg-light">₴</span>
+                                <input asp-for="Amount" class="form-control rounded-end-pill border-2" type="number" step="0.01" placeholder="0.00" />
+                            </div>
+                            <span asp-validation-for="Amount" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold"><i class="bi bi-chat-left-text me-1"></i> Причина</label>
+                            <textarea asp-for="Reason" class="form-control rounded-4 border-2" rows="2" placeholder="Наприклад: Премія за КЛС"></textarea>
+                            <span asp-validation-for="Reason" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold"><i class="bi bi-calendar-event me-1"></i> Дата надання</label>
+                            <input asp-for="DataGranted" class="form-control rounded-pill border-2" type="datetime-local"
+                                   value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                            <span asp-validation-for="DataGranted" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="bi bi-person-badge me-1"></i> Хто призначає</label>
+                            <select asp-for="ManagerId" class="form-select rounded-pill border-2" asp-items="ViewBag.ManagerId">
+                                <option value="">-- Оберіть менеджера --</option>
+                            </select>
+                            <span asp-validation-for="ManagerId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm fw-bold">
+                                <i class="bi bi-check-lg me-1"></i> Зберегти бонус
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">
+                                <i class="bi bi-arrow-left me-1"></i> Назад до списку
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

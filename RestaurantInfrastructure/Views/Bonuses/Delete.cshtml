@@ -1,0 +1,51 @@
+﻿@model RestDomain.Models.Bonuse
+
+@{
+    ViewData["Title"] = "Видалення бонусу";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Підтвердження видалення</h4>
+                </div>
+                <div class="card-body">
+                    <p class="lead text-center">Ви впевнені, що хочете видалити цей бонус? Цю дію неможливо скасувати.</p>
+
+                    <hr />
+
+                    <div class="row px-3">
+                        <div class="col-sm-4 fw-bold">Працівник:</div>
+                        <div class="col-sm-8 text-primary">@(Model.Employee?.LastName ?? "Не вказано")</div>
+
+                        <div class="col-sm-4 fw-bold mt-2">Сума:</div>
+                        <div class="col-sm-8 mt-2"><span class="badge bg-success fs-6">@Model.Amount ₴</span></div>
+
+                        <div class="col-sm-4 fw-bold mt-2">Дата надання:</div>
+                        <div class="col-sm-8 mt-2">@(Model.DataGranted?.ToString("dd.MM.yyyy HH:mm") ?? "Дата відсутня")</div>
+
+                        <div class="col-sm-4 fw-bold mt-2">Причина:</div>
+                        <div class="col-sm-8 mt-2 text-muted italic">@Model.Reason</div>
+
+                        <div class="col-sm-4 fw-bold mt-2">Хто призначив:</div>
+                        <div class="col-sm-8 mt-2">@(Model.Manager?.Employee?.LastName ?? "Адмін")</div>
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Скасувати та повернутись
+                        </a>
+                        <form asp-action="Delete">
+                            <input type="hidden" asp-for="Id" />
+                            <button type="submit" class="btn btn-danger px-4">
+                                <i class="bi bi-trash"></i> Підтвердити видалення
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

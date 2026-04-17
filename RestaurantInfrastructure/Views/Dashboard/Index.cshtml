@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Аналітика ресторану";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center fw-bold text-primary">Панель моніторингу</h1>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Склад персоналу</h5>
+                    <div id="role_chart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Виплати бонусів (грн)</h5>
+                    <div id="bonus_chart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Загальні години роботи по днях</h5>
+                    <div id="hours_chart" style="height: 350px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            // 1. Ролі (PieChart)
+            fetch('/api/charts/countByRole').then(r => r.json()).then(data => {
+                var dt = new google.visualization.DataTable();
+                dt.addColumn('string', 'Роль'); dt.addColumn('number', 'Кількість');
+                data.forEach(i => dt.addRow([i.role, i.count]));
+                new google.visualization.PieChart(document.getElementById('role_chart')).draw(dt, {pieHole: 0.4});
+            });
+
+            // 2. Бонуси (BarChart)
+            fetch('/api/charts/bonusesByEmployee').then(r => r.json()).then(data => {
+                var dt = new google.visualization.DataTable();
+                dt.addColumn('string', 'Працівник'); dt.addColumn('number', 'Сума');
+                data.forEach(i => dt.addRow([i.name, i.total]));
+                new google.visualization.BarChart(document.getElementById('bonus_chart')).draw(dt, {legend: 'none', colors: ['#ff9900']});
+            });
+
+            // 3. Години (ColumnChart)
+            fetch('/api/charts/hoursByDate').then(r => r.json()).then(data => {
+                var dt = new google.visualization.DataTable();
+                dt.addColumn('string', 'Дата'); dt.addColumn('number', 'Години');
+                data.forEach(i => dt.addRow([i.date, i.totalHours]));
+                new google.visualization.ColumnChart(document.getElementById('hours_chart')).draw(dt, {legend: 'none'});
+            });
+        }
+    </script>
+}

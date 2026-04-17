@@ -1,0 +1,50 @@
+﻿@model RestDomain.Models.Employer
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 mb-4 bg-light">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="text-primary fw-bold">@Model.LastName @Model.FirstName</h2>
+                    <p class="mb-0">
+                        <span class="badge bg-info text-dark">@Model.Role</span>
+                        <a href="tel:+38@Model.PhoneNumber" class="ms-3 text-decoration-none text-dark">
+                            <i class="bi bi-telephone"></i> +38 @Model.PhoneNumber
+                        </a>
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="h3 mb-0 text-success fw-bold">@ViewBag.TotalSalary грн</div>
+                    <small class="text-muted">За період (@ViewBag.TotalHours год)</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Таблиця змін *@
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle bg-white mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Дата</th>
+                    <th>Початок</th>
+                    <th>Кінець</th>
+                    <th class="text-end">Годин</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var shift in (List<RestDomain.Models.Shift>)ViewBag.FilteredShifts)
+                {
+                    var duration = (shift.EndTime - shift.StartTime) ?? TimeSpan.Zero;
+                    if (duration.TotalHours < 0) duration = duration.Add(TimeSpan.FromHours(24));
+                    <tr>
+                        <td>@shift.ShiftDate?.ToString("dd.MM.yyyy")</td>
+                        <td>@shift.StartTime?.ToString(@"hh\:mm")</td>
+                        <td>@shift.EndTime?.ToString(@"hh\:mm")</td>
+                        <td class="text-end fw-bold">@Math.Round(duration.TotalHours, 1)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

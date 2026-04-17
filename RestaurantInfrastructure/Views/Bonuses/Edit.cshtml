@@ -1,0 +1,77 @@
+﻿@model RestDomain.Models.Bonuse
+
+@{
+    ViewData["Title"] = "Редагування бонусу";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Редагування бонусу для @(Model.Employee?.LastName ?? "працівника")</h4>
+            <a asp-action="Index" class="btn btn-outline-dark btn-sm">Назад до списку</a>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+                    @* Блок працівника та менеджера *@
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EmployeeId" class="form-label fw-bold">Працівник</label>
+                        <select asp-for="EmployeeId" class="form-select shadow-sm" asp-items="ViewBag.EmployeeId">
+                            <option value="">-- Оберіть працівника --</option>
+                        </select>
+                        <span asp-validation-for="EmployeeId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ManagerId" class="form-label fw-bold">Хто призначив (Менеджер)</label>
+                        <select asp-for="ManagerId" class="form-select shadow-sm" asp-items="ViewBag.ManagerId">
+                            <option value="">-- Оберіть менеджера --</option>
+                        </select>
+                        <span asp-validation-for="ManagerId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    @* Блок суми та дати *@
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Amount" class="form-label fw-bold">Сума бонусу (грн)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₴</span>
+                            <input asp-for="Amount" class="form-control shadow-sm" placeholder="Наприклад: 500" />
+                        </div>
+                        <span asp-validation-for="Amount" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DataGranted" class="form-label fw-bold">Дата та час нарахування</label>
+                        @* Виправлено: type="datetime-local" для передачі повної дати в базу *@
+                        <input asp-for="DataGranted" class="form-control shadow-sm" type="datetime-local"
+                               value="@(Model.DataGranted.HasValue? Model.DataGranted.Value.ToString("yyyy-MM-ddTHH:mm") : DateTime.Now.ToString("yyyy-MM-ddTHH:mm"))" />
+                        <span asp-validation-for="DataGranted" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Reason" class="form-label fw-bold">Причина нарахування</label>
+                    <textarea asp-for="Reason" class="form-control shadow-sm" rows="3" placeholder="Опишіть заслуги працівника..."></textarea>
+                    <span asp-validation-for="Reason" class="text-danger small"></span>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-warning px-5 fw-bold">
+                        Зберегти зміни
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

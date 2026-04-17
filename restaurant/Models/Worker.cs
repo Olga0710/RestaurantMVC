@@ -9,8 +9,8 @@ namespace RestDomain.Models;
 public partial class Worker
 {
     [Key]
-    [Column("EmpoyeeID")]
-    public int EmpoyeeId { get; set; }
+    [Column("EmployeeID")]
+    public int EmployeeId { get; set; }
 
     [Column("ManagerID")]
     public int? ManagerId { get; set; }
@@ -20,11 +20,11 @@ public partial class Worker
 
     public bool? IsMinor { get; set; }
 
-    public int? IsCertified { get; set; }
+    public bool? IsCertified { get; set; }
 
-    [ForeignKey("EmpoyeeId")]
+    [ForeignKey("EmployeeId")]
     [InverseProperty("Worker")]
-    public virtual Employer Empoyee { get; set; } = null!;
+    public virtual Employer Employee { get; set; } = null!;
 
     [ForeignKey("InstructorId")]
     [InverseProperty("Workers")]

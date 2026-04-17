@@ -1,0 +1,70 @@
+﻿@model RestDomain.Models.Employer
+
+<div class="container mt-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-warning fw-bold">
+            <i class="bi bi-pencil-square"></i> Редагування: @Model.FirstName
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Role" id="roleInput" />
+
+                <div class="mb-3">
+                    <label asp-for="FirstName" class="form-label fw-bold small">Ім'я</label>
+                    <input asp-for="FirstName" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LastName" class="form-label fw-bold small">Прізвище</label>
+                    <input asp-for="LastName" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label fw-bold small">Номер телефону</label>
+                    <div class="input-group">
+                        <span class="input-group-text">+38</span>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="0XXXXXXXXX" />
+                    </div>
+                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SalaryPerHour" class="form-label fw-bold small">Ставка (грн/год)</label>
+                    <input asp-for="SalaryPerHour" class="form-control" type="number" step="0.01" />
+                </div>
+
+                @* Поля зв'язків *@
+                <div id="managerField" class="mb-3 d-none">
+                    <label class="form-label fw-bold small">Менеджер</label>
+                    <select name="ManagerId" class="form-select" asp-items="ViewBag.ManagerId">
+                        <option value="">-- Оберіть менеджера --</option>
+                    </select>
+                </div>
+
+                <div id="instructorField" class="mb-3 d-none">
+                    <label class="form-label fw-bold small">Інструктор</label>
+                    <select name="InstructorId" class="form-select" asp-items="ViewBag.InstructorId">
+                        <option value="">-- Без інструктора --</option>
+                    </select>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-light">Назад</a>
+                    <button type="submit" class="btn btn-primary px-4">Зберегти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var role = document.getElementById('roleInput').value;
+            if (role === 'Worker') document.getElementById('instructorField').classList.remove('d-none');
+            if (role === 'Instructor' || role === 'Worker') document.getElementById('managerField').classList.remove('d-none');
+        });
+    </script>
+}

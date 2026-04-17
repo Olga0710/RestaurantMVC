@@ -1,0 +1,64 @@
+﻿@model RestDomain.Models.Shift
+
+@{
+    ViewData["Title"] = "Редагування зміни";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 500px; border-radius: 12px; border: none;">
+        <div class="card-header bg-warning fw-bold py-3" style="border-radius: 12px 12px 0 0;">
+            <i class="bi bi-pencil-square me-2"></i> Редагування зміни
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="EmployeeId" class="form-label fw-bold text-secondary">Працівник</label>
+                    <select asp-for="EmployeeId" class="form-select border-warning-subtle" asp-items="ViewBag.EmployeeId"></select>
+                    <span asp-validation-for="EmployeeId" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ShiftTypeId" class="form-label fw-bold text-secondary">Тип зміни</label>
+                    <select asp-for="ShiftTypeId" class="form-select border-warning-subtle" asp-items="ViewBag.ShiftTypeId"></select>
+                    <span asp-validation-for="ShiftTypeId" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label asp-for="StartTime" class="form-label fw-bold text-secondary">Початок</label>
+                        @* Важливо: формат hh\:mm для TimeSpan *@
+                        <input asp-for="StartTime" type="time" class="form-control border-warning-subtle"
+                               value="@Model.StartTime?.ToString(@"hh\:mm")" required />
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label asp-for="EndTime" class="form-label fw-bold text-secondary">Кінець</label>
+                        <input asp-for="EndTime" type="time" class="form-control border-warning-subtle"
+                               value="@Model.EndTime?.ToString(@"hh\:mm")" required />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ShiftDate" class="form-label fw-bold text-secondary">Дата</label>
+                    @* Формат yyyy-MM-dd для DateOnly *@
+                    <input asp-for="ShiftDate" type="date" class="form-control border-warning-subtle"
+                           value="@Model.ShiftDate?.ToString("yyyy-MM-dd")" required />
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">Назад</a>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm">Зберегти зміни</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+}

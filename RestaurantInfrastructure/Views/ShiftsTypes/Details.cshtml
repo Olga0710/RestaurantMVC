@@ -1,0 +1,102 @@
+﻿@model RestDomain.Models.ShiftsType
+
+@{
+    ViewData["Title"] = "Розшифровка коду";
+}
+
+@functions {
+    public string GetBadgeColor(string code)
+    {
+        if (string.IsNullOrEmpty(code)) return "bg-secondary text-white";
+
+        // Той самий набір кольорів, що і в Index для консистентності
+        string[] colors = {
+            "bg-primary", "bg-success", "bg-danger", "bg-info",
+            "bg-indigo", "bg-teal", "bg-orange", "bg-dark",
+            "bg-maroon", "bg-navy", "bg-cyan"
+        };
+
+        // Генерація хешу на основі назви коду
+        int hash = 0;
+        foreach (char c in code)
+        {
+            hash = (hash << 5) - hash + c;
+        }
+
+        int index = Math.Abs(hash) % colors.Length;
+        string colorClass = colors[index];
+
+        // Визначаємо колір тексту (темний для дуже світлих фонів)
+        string textColor = (colorClass == "bg-warning" || colorClass == "bg-cyan" || colorClass == "bg-lime")
+            ? " text-dark"
+            : " text-white";
+
+        return colorClass + textColor;
+    }
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-5 overflow-hidden">
+                @* Тепер колір шапки завжди збігається з карткою в списку *@
+                <div class="@GetBadgeColor(Model.Name) p-5 text-center shadow-sm">
+                    <h1 class="display-1 fw-bold font-monospace mb-0 text-uppercase">@Model.Name</h1>
+                </div>
+
+                <div class="card-body p-5 bg-white text-center">
+                    <h6 class="text-uppercase text-muted fw-bold mb-3" style="letter-spacing: 2px;">Повна розшифровка</h6>
+                    <div class="p-4 rounded-4 bg-light shadow-inner mb-5">
+                        <p class="h1 fw-bold text-dark mb-0">
+                            @(string.IsNullOrEmpty(Model.Description) ? "Опис відсутній" : Model.Description)
+                        </p>
+                    </div>
+
+                    <div class="d-grid gap-3">
+                        <a asp-action="Index" class="btn btn-dark btn-lg rounded-pill py-3 fw-bold shadow-sm">
+                            <i class="bi bi-arrow-left me-2"></i>До списку
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning border-2 rounded-pill fw-bold">
+                            <i class="bi bi-pencil-square me-2"></i>Змінити опис
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Додаємо визначення кольорів, яких немає в стандартному Bootstrap 5 */
+    .bg-indigo {
+        background-color: #6610f2;
+    }
+
+    .bg-maroon {
+        background-color: #d63384;
+    }
+
+    .bg-navy {
+        background-color: #001f3f;
+    }
+
+    .bg-cyan {
+        background-color: #0dcaf0;
+    }
+
+    .bg-teal {
+        background-color: #20c997;
+    }
+
+    .bg-orange {
+        background-color: #fd7e14;
+    }
+
+    .bg-lime {
+        background-color: #dfff00;
+    }
+
+    .shadow-inner {
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    }
+</style>
